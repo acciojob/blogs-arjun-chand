@@ -5,10 +5,6 @@ import com.driver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class UserService {
     @Autowired
@@ -16,7 +12,7 @@ public class UserService {
 
     public User createUser(String username, String password){
         User user = new User();
-        user.setUserName(username);
+        user.setUsername(username);
         user.setPassword(password);
         userRepository3.save(user);
         return user;

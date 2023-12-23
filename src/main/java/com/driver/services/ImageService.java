@@ -5,8 +5,6 @@ import com.driver.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class ImageService {
 
@@ -38,7 +36,7 @@ public class ImageService {
 
         String [] imgDimension = new String[0];
         if (image != null) {
-            imgDimension = image.getDimension().split("x");
+            imgDimension = image.getDimensions().split("x");
             int integerScreen = Integer.parseInt(screenDimension[0]) * Integer.parseInt(screenDimension[1]);
             int integerImage = Integer.parseInt(screenDimension[0]) * Integer.parseInt(imgDimension[1]);
             return integerScreen / integerImage;
