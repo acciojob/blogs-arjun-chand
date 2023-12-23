@@ -13,34 +13,38 @@ public class ImageService {
     @Autowired
     ImageRepository imageRepository2;
 
-    public Image addImage(Integer blogId, String description, String dimensions){
+    public Image addImage(Integer blogId, String description, String dimensions) {
         //add an image to the blog
+        Blog blog = blogRepository2.findById(blogId).get();
+
         Image image = new Image();
         image.setDescription(description);
-        image.setDimension(dimensions);
-
-        Blog blog = blogRepository2.findById(blogId).orElse(null);
+        image.setDimensions(dimensions);
         image.setBlog(blog);
-        imageRepository2.save(image);
+
+        blog.getImageList().add(image);
+
+        blogRepository2.save(blog);
+
         return image;
     }
 
-    public void deleteImage(Integer id){
+    public void deleteImage(Integer id) {
         imageRepository2.deleteById(id);
     }
 
     public int countImagesInScreen(Integer id, String screenDimensions) {
         //Find the number of images of given dimensions that can fit in a screen having `screenDimensions`
-        Image image = imageRepository2.findById(id).orElse(null);
-        String [] screenDimension = screenDimensions.split("x");
+        Image image = imageRepository2.findById(id).get();
 
-        String [] imgDimension = new String[0];
-        if (image != null) {
-            imgDimension = image.getDimensions().split("x");
-            int integerScreen = Integer.parseInt(screenDimension[0]) * Integer.parseInt(screenDimension[1]);
-            int integerImage = Integer.parseInt(screenDimension[0]) * Integer.parseInt(imgDimension[1]);
-            return integerScreen / integerImage;
-        }
-        return 0;
+        String[] imageDim = image.getDimensions().split("X");
+        int imageWidth = Integer.parseInt(imageDim[0]);
+        int imageHeight = Integer.parseInt(imageDim[1]);
+
+        String[] screenDim = screenDimensions.split("X");
+        int screenWidth = Integer.parseInt(screenDim[0]);
+        int screenHeight = Integer.parseInt(screenDim[1]);
+
+        return (screenWidth / imageWidth) * (screenHeight / imageHeight);
     }
 }
